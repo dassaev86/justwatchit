@@ -1,0 +1,47 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class=" navbar-brand " routerLink="home">JustWatchIt</a>
+    <button class="navbar-toggler " type="button " data-toggle="collapse " data-target="#navbarSupportedContent " aria-controls="navbarSupportedContent " aria-expanded="false " aria-label="Toggle navigation ">
+        <span class="navbar-toggler-icon "></span>
+      </button>
+
+    <div class="collapse navbar-collapse " id="navbarSupportedContent ">
+        <ul class="navbar-nav mr-auto ">
+            <li class="nav-item" routerLinkActive="active">
+                <a class="nav-link " [routerLink]="['/home']">Inicio<span class="sr-only ">(current)</span></a>
+            </li>
+            <li class="nav-item" routerLinkActive="active">
+                <a class="nav-link " [routerLink]="['/search']">Búsqueda</a>
+            </li>
+        </ul>
+        <form class="form-inline my-2 my-lg-0">
+            <input #termino (keyup.enter)="busqueda(termino.value)" class="form-control mr-sm-2  ml-5" type="search " placeholder="Buscar... " aria-label="Search ">
+        </form>
+
+
+        <div *ngIf="!logueado">
+            <button routerLink="/login" class="btn btn-outline-success ml-2 text-white">Login</button>
+            <button routerLink="/register" class="btn btn-outline-info ml-2 text-white">Registrar</button>
+        </div>
+
+        <div *ngIf="logueado" class="btn-group mr-50">
+            <button class="btn btn-secondary btn-sm dropdown-toggle text-white" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            {{usuarioActual.nombre}}
+                    </button>
+            <div class="dropdown-menu dropdown-menu-right">
+                <a (click)="perfil()" class="dropdown-item">Perfil</a>
+                <a class="dropdown-item" routerLink="/search">Buscar</a>
+                <a class="dropdown-item" routerLink="/home">Home</a>
+                <div class="dropdown-divider"></div>
+                <a (click)="logout()" class="dropdown-item text-danger">Salir</a>
+            </div>
+        </div>
+
+
+
+
+        <!-- <div *ngIf="logueado">
+                <p class="ml-2 text-light">Bienvenido, {{usuarioActual.nombre}}</p>
+                <button (click)="logout()" class="btn btn-danger ml-2 text-center">Salir</button>
+            </div>-->
+    </div>
+</nav>

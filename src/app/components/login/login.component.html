@@ -1,0 +1,31 @@
+<div id="main" class="container">
+
+    <div class="col-md-6 mx-auto text-center mt-5">
+        <div class=" card ">
+            <h3>LOGIN</h3>
+            <div class="card-body">
+                <form (submit)="login()">
+                    <div class="form-group">
+                        <label for="email">Email: </label>
+                        <input type="email" name="email" [(ngModel)]="email" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Contrasena: </label>
+                        <input type="password" name="password" [(ngModel)]="password" class="form-control">
+                    </div>
+                    <input type="submit" value="Entrar" class="btn special btn-primary btn-block">
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+<!-- Aqui puedes ver la maquetacion para los botones que sirven para ingresar por medio de redes sociales:
+https://www.youtube.com/watch?v=DbnqAO-8vjM&index=5&list=PL_9MDdjVuFjEysdD_jFmrd4PfbqWcvYPA -->

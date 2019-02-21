@@ -1,1 +1,60 @@
 /* You can add global styles to this file, and also import other style files */
+
+body {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.inside {
+    position: absolute;
+    margin-left: -100%;
+}
+
+.main {
+    background-image: url('assets/img/portada.jpg');
+}
+
+.white {
+    color: white;
+    background: rgba(0, 0, 0, 0.3)
+}
+
+.pointer {
+    cursor: pointer;
+}
+
+.main-footer {
+    margin-top: 30px;
+    height: 50px;
+    background: gray;
+    color: black;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    font-size: 14px;
+    text-align: center;
+}
+
+.centrar {
+    text-align: center;
+}
+
+.titulo {
+    position: absolute;
+    color: white;
+    font-weight: bold;
+    font-size: 0.8rem;
+    border: solid 1px black;
+    background: rgba(0, 0, 0, 0.5);
+}
+
+.carousel-inner h5 {
+    color: white;
+    font-size: 1.2rem;
+}
+
+#footer .icons i {
+    font-size: 2rem;
+}
+
+.badge-brown {
+    background: rgb(106, 73, 40);
+    color: white;
+}

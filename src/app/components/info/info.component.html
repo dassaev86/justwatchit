@@ -1,0 +1,152 @@
+<div class="container">
+
+    <div class="row mt-3">
+        <div class="col-4">
+            <!-- Inicia Card de Imagen Principal-->
+
+            <div class="card" style="width: 18rem;">
+                <img src="https://image.tmdb.org/t/p/w500/{{movie.poster_path}}" class="card-img-top" alt="...">
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item"><span class="badge badge-info w-100">Duración: {{movie.runtime}} min.</span></li>
+                    <li class="list-group-item"><span class="badge badge-info w-100">Calificación: {{movie.vote_average}}</span></li>
+                    <li class="list-group-item"><span class="badge badge-info w-100">Remuneración: {{movie.revenue | number}}</span></li>
+                </ul>
+                <div class="card-body">
+                    <button class="btn btn-block btn-danger mt-2" (click)="return()" type="button">Regresar</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Termina Card de Imagen Principal-->
+
+        <div class="col-8">
+
+            <!-- Inicia Card de Informacion Principal-->
+            <div class="card text-center">
+                <div class="card-header">
+                    Sinopsis
+                </div>
+                <div class="card-body">
+                    <h2 *ngIf="movie.original_language === 'en'" class="card-title">{{movie.original_title}}<small>  ({{movie.release_date.substring(0, 4)}})</small></h2>
+                    <h2 *ngIf="movie.original_language !== 'en'" class="card-title">{{movie.title}}<small>  ({{movie.release_date.substring(0, 4)}})</small></h2>
+                    <h5 class="card-title text-center"><i>{{movie.title}}</i></h5>
+
+                    <div *ngIf="movie.overview === ''" class="alert alert-warning" role="alert">
+                        Esta pelicula no cuenta con sinopsis por el momento
+                    </div>
+                    <p class="card-text text-justify">{{movie.overview}}</p>
+                    <p class="text-rigth"><b>Director:</b> {{cast.crew[0].name}}</p>
+                    <button *ngIf="!mostrarOpinionPublicada && !mostrarDivOpinion" class="btn btn-primary mt-2" (click)="opinar()" type="button">Quiero opinar sobre esta obra</button>
+                </div>
+                <div class="card-footer">
+                    <p><b>Cast:</b> {{cast.cast[0].name}}, {{cast.cast[1].name}} y {{cast.cast[2].name}}</p>
+                    <a class="text-right" href="https://www.imdb.com/title/{{movie.imdb_id}}">Más Información</a>
+                </div>
+            </div>
+            <!-- Termina Card de Informacion Principal-->
+
+            <!-- Inicia Card del Div Opinion-->
+
+            <div class="card mt-3" *ngIf="mostrarDivOpinion">
+                <h5 class="card-header text-center">¿Debería alguien más ver esta obra?</h5>
+                <div class="card-body">
+                    <input #rango (change)="calificar(rango.value)" type="range" class="custom-range mt-0" min="0" max="5">
+                    <span class="badge badge-danger">Peor</span>
+                    <span class="badge badge-primary" style="float:right;">Mejor</span>
+                    <span *ngIf="califNumero === 0" class="badge badge-danger text-center" style="width:100%"><i class="fa fa-poo mr-1"></i><i class="fa fa-poo mr-1"></i><i class="fa fa-poo mr-2"></i>Horrible: ni siquiera pude terminar de verla</span>
+                    <span *ngIf="califNumero === 1" class="badge badge-warning text-center" style="width:100%"><i class="fa fa-poo mr-1"></i><i class="fa fa-poo mr-2"></i>Pésima: no pierdas tu tiempo con esto</span>
+                    <span *ngIf="califNumero === 2" class="badge badge-secondary text-center" style="width:100%"><i class="fa fa-poo mr-2"></i>Mala: no la veas, mejor busca algo más</span>
+                    <span *ngIf="califNumero === 3" class="badge badge-dark text-center" style="width:100%"><i class="fa fa-award mr-2"></i>Regular: dale una oportunidad si no hay nada mejor</span>
+                    <span *ngIf="califNumero === 4" class="badge badge-success text-center" style="width:100%"><i class="fa fa-award mr-1"></i><i class="fa fa-award mr-2"></i>Buena: tenla en cuenta entre tus prioridades</span>
+                    <span *ngIf="califNumero === 5" class="badge badge-primary text-center" style="width:100%"><i class="fa fa-award mr-1"></i><i class="fa fa-award mr-1"></i><i class="fa fa-award mr-2"></i>Excelente: tienes que verla lo antes posible</span>
+                    <div class="input-group mt-5">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">Microreseña ({{letras}} letras)</span>
+                        </div>
+                        <textarea #resena (keyup)="contar(resena.value)" class="form-control" style="height: 90px;" placeholder="Escribe tu microreseña (opcional)" aria-label="With textarea"></textarea>
+                    </div>
+                    <div>
+                        <button [disabled]="caracteresExcedidos" (click)="publicarOpinion()" type="button" class="btn btn-success mt-2">Publicar Opinion</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Termina Card del Div Opinion-->
+
+            <div class="div mt-2" *ngIf="mostrarOpinionPublicada">
+                <div class="card">
+                    <div class="card-header">
+                        Tu opinión de esta película:
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            <span *ngIf="usuarioActual.valorados[indexValorados].valor === 0" class="badge badge-danger text-center" style="font-size: 0.9rem"><i class="fa fa-poo mr-1"></i><i class="fa fa-poo mr-1"></i><i class="fa fa-poo mr-2"></i>Horrible: ni siquiera pude terminar de verla</span>
+                            <span *ngIf="usuarioActual.valorados[indexValorados].valor === 1" class="badge badge-warning text-center" style="font-size: 0.9rem"><i class="fa fa-poo mr-1"></i><i class="fa fa-poo mr-2"></i>Pésima: no pierdas tu tiempo con esto</span>
+                            <span *ngIf="usuarioActual.valorados[indexValorados].valor === 2" class="badge badge-secondary text-center" style="font-size: 0.9rem"><i class="fa fa-poo mr-2"></i>Mala: no la veas, mejor busca algo más</span>
+                            <span *ngIf="usuarioActual.valorados[indexValorados].valor === 3" class="badge badge-dark text-center" style="font-size: 0.9rem"><i class="fa fa-award mr-2"></i>Regular: dale una oportunidad si no hay nada mejor</span>
+                            <span *ngIf="usuarioActual.valorados[indexValorados].valor === 4" class="badge badge-success text-center" style="font-size: 0.9rem"><i class="fa fa-award mr-1"></i><i class="fa fa-award mr-2"></i>Buena: tenla en cuenta entre tus prioridades</span>
+                            <span *ngIf="usuarioActual.valorados[indexValorados].valor === 5" class="badge badge-primary text-center" style="font-size: 0.9rem"><i class="fa fa-award mr-1"></i><i class="fa fa-award mr-1"></i><i class="fa fa-award mr-2"></i>Excelente: tienes que verla lo antes posible</span>
+                        </h5>
+                        <p #microActual *ngIf="usuarioActual.valorados[indexValorados].micro !== ''" class="card-text"><b>Tu microreseña:</b> "{{usuarioActual.valorados[indexValorados].micro}}"</p>
+                        <div *ngIf="usuarioActual.valorados[indexValorados].micro === ''" class="alert alert-light" role="alert">
+                            Puedes agregar un microreseña dando clic en "Cambiar de Opinión"
+                        </div>
+                        <div class="align-middle">
+                            <button (click)="opinar()" class="btn btn-primary">Cambiar de Opinión</button>
+                            <button (click)="eliminarOpinion(peliculaActual.movieId, usuarioActual.uid)" class="btn btn-danger ml-3">Eliminar Opinión</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <hr>
+
+    <!--Inicia Barra de Si o No-->
+
+    <div class="row mt-5">
+        <div class="col-12">
+            <h2> ¿Debería ver {{movie.original_title}}? <small style="font-size: 15px;" class="badge badge-dark">Votos: <span class="badge badge-light">{{peliculaActual.valoraciones.length}}</span> </small></h2>
+            <div class="progress">
+                <div class="progress-bar progress-bar-striped" role="progressbar" [ngStyle]="{'width': porcentajePositivo}" aria-valuemin="0" aria-valuemax="100"></div>
+                <div class="progress-bar progress-bar-striped bg-danger" role="progressbar" [ngStyle]="{'width': porcentajeNegativo}" aria-valuemin="0" aria-valuemax="100"></div>
+            </div>
+            <p class="text-left text-blue" style="float: left;"><span class="badge badge-primary">SI - {{porcentajePositivo}}</span></p>
+            <p style="float: right;"><span class="badge badge-danger">NO - {{porcentajeNegativo}}</span></p>
+        </div>
+    </div>
+    <hr>
+
+    <!-- Termina Barra de Si o No-->
+
+    <div class="row mt-5">
+        <div class="col-12">
+            <h4 class="mb-5">Microreseñas: </h4>
+            <div *ngIf="peliculaActual.valoraciones.length === 0" class="alert alert-warning" role="alert">
+                Aun no hay microreseñas para esta película
+            </div>
+            <div *ngFor="let val of peliculaActual.valoraciones">
+                <div *ngIf="val.micro !== ''" [ngClass]="{'bg-primary': val.valor === 5, 'bg-success': val.valor === 4, 'bg-dark': val.valor === 3, 'badge-secondary': val.valor === 2, 'bg-warning': val.valor === 1, 'bg-danger': val.valor === 0}" class="card text-white mb-3 ml-2"
+                    style="width: 100%; float: left;">
+                    <div class="card-header"><b class="text-white">{{val.nombreUsuario}} dice:
+                            <i *ngIf="val.valor <= 0" class="fa fa-poo ml-1 text-white" style="float:right;"></i>
+                            <i *ngIf="val.valor <= 1" class="fa fa-poo ml-1 text-white" style="float:right;"></i>
+                            <i *ngIf="val.valor <= 2" class="fa fa-poo ml-1 text-white" style="float:right;"></i>
+                            <i *ngIf="val.valor >= 3" class="fa fa-award ml-1 text-white" style="float:right;"></i>
+                            <i *ngIf="val.valor >= 4" class="fa fa-award ml-1 text-white" style="float:right;"></i>
+                            <i *ngIf="val.valor >= 5" class="fa fa-award ml-1 text-white" style="float:right;"></i>
+                    </b></div>
+                    <div class="card-body">
+                        <!--<h5 class="card-title"></h5>-->
+                        <p class="card-text">{{val.micro}}</p>
+                        <footer class="blockquote-footer">{{val.generoUsuario}}<cite title="Source Title">  de entre {{val.edadUsuario}} años</cite></footer>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+</div>

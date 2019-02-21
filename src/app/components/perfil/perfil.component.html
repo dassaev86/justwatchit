@@ -1,0 +1,92 @@
+<div class="container mt-5">
+    <div class="row justify-content-md-center">
+        <div class="col-5">
+
+            <div class="card">
+                <h5 class="card-header text-center">Perfil de {{usuario.nombre}}</h5>
+                <div class="card-body">
+                    <form ngNativeValidate #forma="ngForm" (ngSubmit)="guardar(forma.value)" class="form-horizontal p-t-20">
+                        <div class="form-group">
+                            <div class="input-group">
+                                <div class="input-group-prepend w-30">
+                                    <span class="input-group-text" id="basic-addon1">Usuario</span>
+                                </div>
+                                <input [ngModel]="usuario.nombre" name="nombre" type="text" class="form-control w-70" aria-describedby="basic-addon1">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <label class="input-group-text" for="edad">Grupo de Edad</label>
+                                </div>
+                                <select class="custom-select" name="edad" [(ngModel)]="usuario.edad">
+                                        <option selected>Selecciona... </option>
+                                        <option value="10 - 15">10 - 15 años</option>
+                                        <option value="16 - 20">16 - 20 años</option>
+                                        <option value="21 - 25">21 - 25 años</option>
+                                        <option value="26 - 30">26 - 30 años</option>
+                                        <option value="31 - 35">31 - 35 años</option>
+                                        <option value="36 - 40">36 - 40 años</option>
+                                        <option value="41 - 45">41 - 45 años</option>
+                                        <option value="46 - 50">46 - 50 años</option>
+                                        <option value="51 - 55">51 - 55 años</option>
+                                        <option value="56 - 60">56 - 60 años</option>
+                                        <option value="61 o más">61 años o más</option>
+                                      </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <label class="input-group-text" for="genero">Género</label>
+                                </div>
+                                <select class="custom-select" name="genero" [(ngModel)]="usuario.genero">
+                                          <option selected>Selecciona... </option>
+                                          <option value="masculino">Masculino</option>
+                                          <option value="femenino">Femenino</option>
+                                          <option value="indefinido">Indefinido</option>
+                                        </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div>
+                                <button type="submit" class="btn btn-block btn-success waves-effect waves-light"><i class="fa fa-save"></i> Guardar</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="row mt-5">
+        <div class="col-12">
+            <table class="table">
+                <thead class="thead-dark">
+                    <tr class="centrar">
+                        <th class="centrar" scope="col" colspan="4">Registro de tus valoraciones:</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let val of usuario.valorados" class="text-white" [ngClass]="{'bg-primary': val.valor === 5, 'bg-success': val.valor === 4, 'bg-dark': val.valor === 3, 'bg-secondary': val.valor === 2, 'bg-warning': val.valor === 1, 'bg-danger': val.valor === 0}">
+                        <td style="width: 5.5%;">
+                            <img (click)="showInfo(val.movie)" src="{{val | images}}" class="img-fluid pointer" alt="Responsive image">
+                        </td>
+                        <td class="centrar align-middle " style="width: 30%;"><a class="pointer" (click)="showInfo(val.movie)"><b class="text-white">{{val.nombre}}</b></a></td>
+                        <td class="centrar align-middle" style="width: 10%;">
+                            <span style="float: left"> 
+                                    <i *ngIf="val.valor <= 0" class="fa fa-poo ml-1 text-white" style="float:right;"></i>
+                                    <i *ngIf="val.valor <= 1" class="fa fa-poo ml-1 text-white" style="float:right;"></i>
+                                    <i *ngIf="val.valor <= 2" class="fa fa-poo ml-1 text-white" style="float:right;"></i>
+                                    <i *ngIf="val.valor >= 3" class="fa fa-award ml-1 text-white" style="float:right;"></i>
+                                    <i *ngIf="val.valor >= 4" class="fa fa-award ml-1 text-white" style="float:right;"></i>
+                                    <i *ngIf="val.valor >= 5" class="fa fa-award ml-1 text-white" style="float:right;"></i>
+                            </span>
+                        </td>
+                        <td class="align-middle text-center" style="width: 55%;">{{val.micro}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
